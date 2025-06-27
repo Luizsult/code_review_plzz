@@ -8,4 +8,4 @@ std::vector<std::vector<int>> ReadBoardFromFile(const std::string& filename, int
 int CalculateMinPath(const std::vector<std::vector<int>>& board);
 void WriteResultToFile(const std::string& filename, int result);
 
-#endif  
+#endif  // TURTLE_PATH_H
