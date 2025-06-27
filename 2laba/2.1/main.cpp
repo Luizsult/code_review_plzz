@@ -3,33 +3,27 @@
 #include <limits>
 #include <windows.h>
 
-int SafeInputInt(const std::string& prompt) {
-  int value;
-  while (true) {
-    std::cout << prompt;
-    if (std::cin >> value) {
-      break;
-    }
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    std::cout << "Ошибка ввода. Пожалуйста, введите целое число." << std::endl;
-  }
-  return value;
-}
-
 int main() {
   SetConsoleCP(1251);
   SetConsoleOutputCP(1251);
 
   try {
     Stack stack;
-    int n = SafeInputInt("Сколько чисел вы хотите добавить в стек? ");
-    if (n < 0) {
-      throw std::invalid_argument("Количество элементов не может быть отрицательным");
+    int n;
+    
+    std::cout << "Сколько чисел вы хотите добавить в стек? ";
+    if (!(std::cin >> n) || n < 0) {
+      throw std::invalid_argument("Ошибка: количество элементов должно быть неотрицательным числом");
     }
 
     for (int i = 0; i < n; ++i) {
-      int value = SafeInputInt("Введите число " + std::to_string(i + 1) + ": ");
+      int value;
+      std::cout << "Введите число " << (i + 1) << ": ";
+      if (!(std::cin >> value)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        throw std::invalid_argument("Ошибка: введено некорректное число");
+      }
       stack.Push(value);
     }
 
@@ -37,7 +31,14 @@ int main() {
     std::cout << "Элементы в стеке: ";
     stack.Show();
 
-    int d = SafeInputInt("Введите значение D для добавления в стек: ");
+    int d;
+    std::cout << "Введите значение D для добавления в стек: ";
+    if (!(std::cin >> d)) {
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      throw std::invalid_argument("Ошибка: введено некорректное число");
+    }
+
     Node* new_top = stack.Push(d);
     std::cout << "Элементы в новом стеке: ";
     stack.Show();
@@ -45,9 +46,12 @@ int main() {
 
     if (!stack.IsEmpty()) {
       std::cout << "Значение новой вершины: " << stack.GetTopValue() << std::endl;
+    } else {
+      std::cout << "Стек пуст!" << std::endl;
     }
+
   } catch (const std::exception& e) {
-    std::cerr << "Произошла ошибка: " << e.what() << std::endl;
+    std::cerr << e.what() << std::endl;
     return 1;
   }
 
