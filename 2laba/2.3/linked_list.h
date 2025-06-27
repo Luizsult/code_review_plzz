@@ -17,20 +17,15 @@ public:
     ~LinkedList() { clearList(); }
 
     void add(int value);
-
     void insertBeforeEverySecond(int M);
-
     void print() const;
-
     Node* getLastNode() const;
-
     void clearList();
 
     friend void insertBeforeEverySecond(LinkedList& list, int M);
 
 private:
     Node* head;
-
     bool isEmpty() const { return head == nullptr; }
 };
 
