@@ -50,8 +50,6 @@ std::vector<int> selectArtifacts(const ArtifactData& data) {
     std::vector<int> min_tax(max_weight + 1, std::numeric_limits<int>::max());
     min_tax[0] = 0;
 
-    //FIXME: Улучшена читаемость циклов
-    // for (int i = 0; i < N; i++)
     for (int i = 0; i < data.N; ++i) {
         for (int w = max_weight; w >= data.weights[i]; --w) {
             if (min_tax[w - data.weights[i]] != std::numeric_limits<int>::max()) {
