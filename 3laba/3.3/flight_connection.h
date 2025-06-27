@@ -1,9 +1,9 @@
 /**
  * @file flight_connection.h
- * @brief Header file for flight connection operations.
+ * @brief Заголовочный файл для работы с авиационными соединениями.
  * 
- * This file contains declarations for functions that process flight connections
- * between cities represented as an adjacency matrix.
+ * Содержит объявления функций для обработки авиационных маршрутов между городами,
+ * представленных в виде матрицы смежности.
  */
 
 #ifndef FLIGHT_CONNECTION_H
@@ -13,27 +13,27 @@
 #include <string>
 
 /**
- * @brief Finds cities reachable within a limited number of transfers.
+ * @brief Находит города, достижимые с ограниченным числом пересадок.
  * 
- * Given an adjacency matrix of flight connections, this function finds all cities
- * reachable from a starting city with less than a specified number of transfers.
+ * По заданной матрице смежности авиационных соединений находит все города,
+ * достижимые из начального города с числом пересадок меньше указанного.
  * 
- * @param adjacencyMatrix The adjacency matrix representing flight connections.
- * @param startCity The starting city (1-based index).
- * @param maxTransfers The maximum number of allowed transfers.
- * @return std::vector<int> Sorted list of reachable cities (1-based indices), or {-1} if none.
- * @throws std::invalid_argument If input parameters are invalid.
+ * @param adjacencyMatrix Матрица смежности, представляющая авиационные соединения.
+ * @param startCity Начальный город (индекс начинается с 1).
+ * @param maxTransfers Максимально допустимое число пересадок.
+ * @return std::vector<int> Отсортированный список достижимых городов (индексы с 1), или {-1} если таких нет.
+ * @throws std::invalid_argument Если входные параметры некорректны.
  */
 std::vector<int> FindReachableCities(const std::vector<std::vector<int>>& adjacencyMatrix,
                                     int startCity,
                                     int maxTransfers);
 
 /**
- * @brief Reads flight connections from a file and builds an adjacency matrix.
+ * @brief Читает данные о авиационных соединениях из файла.
  * 
- * @param fileName The name of the file containing the flight connections data.
- * @return std::vector<std::vector<int>> The adjacency matrix.
- * @throws std::runtime_error If the file cannot be opened or data is invalid.
+ * @param fileName Имя файла с данными о авиационных соединениях.
+ * @return std::vector<std::vector<int>> Матрица смежности.
+ * @throws std::runtime_error Если файл не может быть открыт или данные некорректны.
  */
 std::vector<std::vector<int>> ReadFlightConnections(const std::string& fileName);
 
