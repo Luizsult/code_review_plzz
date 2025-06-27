@@ -34,4 +34,4 @@ class Stack {
   Node* top_;  
 };
 
-#endif  
+#endif 
