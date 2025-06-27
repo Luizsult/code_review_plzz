@@ -2,35 +2,34 @@
 #include <iostream>
 #include <limits>
 
-int getValidatedInput(const std::string& prompt) {
-    int value;
-    while (true) {
-        std::cout << prompt;
-        if (std::cin >> value) {
-            return value;
-        } else {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cerr << "Ошибка: введите целое число.\n";
-        }
-    }
-}
-
 int main() {
     LinkedList list;
     try {
-        int n = getValidatedInput("Введите количество элементов в списке: ");
-        if (n < 0) {
-            throw std::invalid_argument("Количество элементов не может быть отрицательным");
+        int n;
+        std::cout << "Введите количество элементов в списке: ";
+        if (!(std::cin >> n) || n < 0) {
+            throw std::invalid_argument("Неверное количество элементов");
         }
 
         std::cout << "Введите элементы списка: ";
         for (int i = 0; i < n; ++i) {
-            int value = getValidatedInput("");
+            int value;
+            if (!(std::cin >> value)) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                throw std::invalid_argument("Неверный формат элемента списка");
+            }
             list.add(value);
         }
 
-        int M = getValidatedInput("Введите значение M для вставки: ");
+        int M;
+        std::cout << "Введите значение M для вставки: ";
+        if (!(std::cin >> M)) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            throw std::invalid_argument("Неверный формат значения M");
+        }
+
         insertBeforeEverySecond(list, M);
 
         std::cout << "Список после вставки: ";
