@@ -1,8 +1,8 @@
 /**
  * @file expression_tree.cpp
- * @brief Implementation of expression tree operations
+ * @brief Реализация операций с деревом выражений
  * 
- * This file contains the implementation of functions for working with prefix expression trees.
+ * Этот файл содержит реализацию функций для работы с деревьями префиксных выражений.
  */
 
 #include "expression_tree.h"
@@ -15,24 +15,24 @@
 using namespace std;
 
 /**
- * @brief Helper function to check if a value represents an operation
- * @param val Value to check
- * @return True if the value is an operation code, false otherwise
+ * @brief Вспомогательная функция для проверки, представляет ли значение операцию
+ * @param val Проверяемое значение
+ * @return true если значение является кодом операции, false в противном случае
  */
 bool is_operation(int val) {
     return val >= -6 && val <= -1;
 }
 
 /**
- * @brief Helper function to read the next token from the input stream
- * @param iss Input string stream
- * @return The next token as an integer
- * @throws std::runtime_error If token is invalid
+ * @brief Вспомогательная функция для чтения следующей лексемы из входного потока
+ * @param iss Входной строковый поток
+ * @return Следующая лексема в виде целого числа
+ * @throws std::runtime_error Если лексема неверная
  */
 int read_next_token(istringstream& iss) {
     string token;
     if (!(iss >> token)) {
-        throw runtime_error("Unexpected end of expression");
+        throw runtime_error("Неожиданный конец выражения");
     }
 
     if (token == "+") return -1;
@@ -45,20 +45,20 @@ int read_next_token(istringstream& iss) {
     try {
         int num = stoi(token);
         if (num < 0 || num > 9) {
-            throw runtime_error("Operand out of range (0-9): " + token);
+            throw runtime_error("Операнд вне диапазона (0-9): " + token);
         }
         return num;
     } catch (const invalid_argument&) {
-        throw runtime_error("Invalid token: " + token);
+        throw runtime_error("Неверная лексема: " + token);
     } catch (const out_of_range&) {
-        throw runtime_error("Operand out of range (0-9): " + token);
+        throw runtime_error("Операнд вне диапазона (0-9): " + token);
     }
 }
 
 TreeNode* build_expression_tree(const char* filename) {
     ifstream file(filename);
     if (!file.is_open()) {
-        throw runtime_error("Failed to open file: " + string(filename));
+        throw runtime_error("Не удалось открыть файл: " + string(filename));
     }
 
     string expression;
@@ -69,7 +69,6 @@ TreeNode* build_expression_tree(const char* filename) {
     TreeNode* root = nullptr;
 
     try {
-        // We'll process tokens in reverse order for easier stack processing
         vector<int> tokens;
         while (iss) {
             tokens.push_back(read_next_token(iss));
@@ -81,7 +80,7 @@ TreeNode* build_expression_tree(const char* filename) {
 
             if (is_operation(val)) {
                 if (node_stack.size() < 2) {
-                    throw runtime_error("Not enough operands for operation");
+                    throw runtime_error("Недостаточно операндов для операции");
                 }
                 node->left = node_stack.top();
                 node_stack.pop();
@@ -93,12 +92,11 @@ TreeNode* build_expression_tree(const char* filename) {
         }
 
         if (node_stack.size() != 1) {
-            throw runtime_error("Invalid expression format");
+            throw runtime_error("Неверный формат выражения");
         }
 
         root = node_stack.top();
     } catch (const exception& e) {
-        // Clean up any allocated nodes before re-throwing
         while (!node_stack.empty()) {
             delete node_stack.top();
             node_stack.pop();
@@ -110,26 +108,24 @@ TreeNode* build_expression_tree(const char* filename) {
 }
 
 /**
- * @brief Helper function to evaluate a subtree and replace it with a value node
- * @param node Pointer to the root of the subtree to evaluate
+ * @brief Вспомогательная функция для вычисления поддерева и замены его узлом значения
+ * @param node Указатель на корень поддерева для вычисления
  */
 void evaluate_and_replace(TreeNode* node) {
     if (!node || !is_operation(node->value)) return;
 
-    // First process children recursively
     evaluate_and_replace(node->left);
     evaluate_and_replace(node->right);
 
-    if (node->value == -6) {  // Exponentiation operation
+    if (node->value == -6) { 
         if (!node->left || !node->right) {
-            throw runtime_error("Invalid exponentiation operation");
+            throw runtime_error("Неверная операция возведения в степень");
         }
 
         int base = node->left->value;
         int exponent = node->right->value;
         int result = static_cast<int>(pow(base, exponent));
 
-        // Replace this operation node with a value node
         node->value = result;
         delete node->left;
         delete node->right;
