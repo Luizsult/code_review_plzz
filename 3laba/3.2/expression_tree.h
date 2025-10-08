@@ -1,46 +1,46 @@
 /**
  * @file expression_tree.h
- * @brief Header file for expression tree operations
+ * @brief Заголовочный файл для операций с деревьями выражений
  * 
- * This file contains the declaration of the TreeNode structure and functions
- * for working with prefix expression trees.
+ * Этот файл содержит объявление структуры TreeNode и функций
+ * для работы с деревьями выражений в префиксной записи.
  */
 
 #ifndef EXPRESSION_TREE_H
 #define EXPRESSION_TREE_H
 
 /**
- * @brief Structure representing a node in the expression tree
+ * @brief Структура, представляющая узел в дереве выражений
  */
 struct TreeNode {
-    int value;          ///< Value of the node (operand or encoded operation)
-    TreeNode* left;     ///< Pointer to the left child
-    TreeNode* right;    ///< Pointer to the right child
+    int value;          
+    TreeNode* left;     
+    TreeNode* right;    
 
     /**
-     * @brief Constructor for TreeNode
-     * @param val Value to store in the node
+     * @brief Конструктор для TreeNode
+     * @param val Значение для хранения в узле
      */
     explicit TreeNode(int val) : value(val), left(nullptr), right(nullptr) {}
 };
 
 /**
- * @brief Reads a prefix expression from a file and builds an expression tree
- * @param filename Name of the file containing the prefix expression
- * @return Pointer to the root of the built tree
- * @throws std::runtime_error If file cannot be opened or expression is invalid
+ * @brief Читает префиксное выражение из файла и строит дерево выражений
+ * @param filename Имя файла, содержащего префиксное выражение
+ * @return Указатель на корень построенного дерева
+ * @throws std::runtime_error Если файл не может быть открыт или выражение неверно
  */
 TreeNode* build_expression_tree(const char* filename);
 
 /**
- * @brief Removes exponentiation operations from the tree by replacing them with their computed values
- * @param root Pointer to the root of the tree to modify
+ * @brief Удаляет операции возведения в степень из дерева, заменяя их вычисленными значениями
+ * @param root Указатель на корень дерева для модификации
  */
 void remove_exponentiation(TreeNode* root);
 
 /**
- * @brief Deletes the expression tree and frees memory
- * @param root Pointer to the root of the tree to delete
+ * @brief Удаляет дерево выражений и освобождает память
+ * @param root Указатель на корень дерева для удаления
  */
 void delete_tree(TreeNode* root);
 
