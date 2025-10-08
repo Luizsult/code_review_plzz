@@ -7,6 +7,7 @@
  */
 
 #include <iostream>
+#include <vector>
 #include "flight_connection.h"
 
 int main() {
@@ -15,7 +16,7 @@ int main() {
         std::cout << "Введите имя файла: ";
         std::cin >> fileName;
 
-        auto adjacencyMatrix = ReadFlightConnections(fileName);
+        std::vector<std::vector<int>> adjacencyMatrix = ReadFlightConnections(fileName);
 
         int startCity, maxTransfers;
         std::cout << "Введите начальный город (индекс с 1): ";
@@ -23,7 +24,7 @@ int main() {
         std::cout << "Введите максимальное число пересадок: ";
         std::cin >> maxTransfers;
 
-        auto reachableCities = FindReachableCities(adjacencyMatrix, startCity, maxTransfers);
+        std::vector<int> reachableCities = FindReachableCities(adjacencyMatrix, startCity, maxTransfers);
 
         std::cout << "Достижимые города: ";
         for (int city : reachableCities) {
