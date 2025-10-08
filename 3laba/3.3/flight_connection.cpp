@@ -15,7 +15,6 @@
 std::vector<int> FindReachableCities(const std::vector<std::vector<int>>& adjacencyMatrix,
                                     int startCity,
                                     int maxTransfers) {
-    // Проверка входных параметров
     if (adjacencyMatrix.empty() || adjacencyMatrix.size() != adjacencyMatrix[0].size()) {
         throw std::invalid_argument("Некорректная матрица смежности");
     }
@@ -31,13 +30,12 @@ std::vector<int> FindReachableCities(const std::vector<std::vector<int>>& adjace
     std::queue<std::pair<int, int>> q;  // {город, текущее число пересадок}
     std::vector<bool> visited(numCities, false);
 
-    // Конвертируем в 0-базированный индекс
     const int startIndex = startCity - 1;
     q.push({startIndex, -1});  // Начальный город требует 0 пересадок, но мы считаем рёбра
     visited[startIndex] = true;
 
     while (!q.empty()) {
-        auto current = q.front();
+        std::pair<int, int> current = q.front();
         q.pop();
         int currentCity = current.first;
         int currentTransfers = current.second;
@@ -56,13 +54,11 @@ std::vector<int> FindReachableCities(const std::vector<std::vector<int>>& adjace
         }
     }
 
-    // Удаляем дубликаты и сортируем
     std::sort(reachableCities.begin(), reachableCities.end());
     reachableCities.erase(
         std::unique(reachableCities.begin(), reachableCities.end()),
         reachableCities.end());
 
-    // Удаляем начальный город, если он был включён
     reachableCities.erase(
         std::remove(reachableCities.begin(), reachableCities.end(), startCity),
         reachableCities.end());
@@ -82,7 +78,6 @@ std::vector<std::vector<int>> ReadFlightConnections(const std::string& fileName)
     int numCities;
     inputFile >> numCities;
 
-    // Проверка числа городов
     if (numCities <= 0 || numCities > 25) {
         throw std::runtime_error("Некорректное число городов: должно быть от 1 до 25");
     }
@@ -94,7 +89,6 @@ std::vector<std::vector<int>> ReadFlightConnections(const std::string& fileName)
             if (!(inputFile >> adjacencyMatrix[i][j])) {
                 throw std::runtime_error("Некорректные данные матрицы в файле");
             }
-            // Проверка значений матрицы
             if (adjacencyMatrix[i][j] != 0 && adjacencyMatrix[i][j] != 1) {
                 throw std::runtime_error("Значения матрицы должны быть 0 или 1");
             }
